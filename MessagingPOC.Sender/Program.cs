@@ -47,7 +47,7 @@ namespace MessagingPOC.Sender
                 if (!manager.SubscriptionExists(TopicPath, subscriptionName))
                 {
                     //create with filter
-                    manager.CreateSubscription(description,new SqlFilter($"Target = 'Worker{workerNumber}' OR Target = 'Any'"));
+                    manager.CreateSubscription(description,new SqlFilter($"Target LIKE '%Worker{workerNumber}%' OR Target = 'Any'"));
                 }
                 workerNumber++;
             });
@@ -93,13 +93,13 @@ namespace MessagingPOC.Sender
                 switch (target)
                 {
                     case "1":
-                        messageTarget = "Worker1";
+                        messageTarget = "Test.Worker1";
                         break;
                     case "2":
-                        messageTarget = "Worker2";
+                        messageTarget = "Test.Worker2";
                         break;
                     case "3":
-                        messageTarget = "Worker3";
+                        messageTarget = "Test.Worker3";
                         break;
                     default:
                         messageTarget = "Any";
