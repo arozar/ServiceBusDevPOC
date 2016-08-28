@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MessagingPOC.Shared;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
@@ -7,7 +8,6 @@ namespace MessagingPOC.Sender
 {
     class Program
     {
-        static string ConnectionString = "";
         static string TopicPath = "basetopic";
 
         static List<string> Subscriptions = new List<string>
@@ -22,7 +22,7 @@ namespace MessagingPOC.Sender
             TopicPath = $"{TopicPath}-{Environment.MachineName}";
 #endif
             // Create a namespace manager to manage artifacts
-            var manager = NamespaceManager.CreateFromConnectionString(ConnectionString);
+            var manager = NamespaceManager.CreateFromConnectionString(Config.ConnectionString);
 
             // Create a topic if it does not exist
             if (!manager.TopicExists(TopicPath))
@@ -42,6 +42,7 @@ namespace MessagingPOC.Sender
                 //if this is for dev then delete the queue/subscription when its not being used
                 description.AutoDeleteOnIdle = TimeSpan.FromHours(1);
 #endif
+                description.LockDuration = TimeSpan.FromMinutes(1);
                 //if the filter is changed will need to delete it from the topic.
                 //Could test update function
                 if (!manager.SubscriptionExists(TopicPath, subscriptionName))
@@ -52,12 +53,12 @@ namespace MessagingPOC.Sender
                 workerNumber++;
             });
 
-            var factory = MessagingFactory.CreateFromConnectionString(ConnectionString);
+            var factory = MessagingFactory.CreateFromConnectionString(Config.ConnectionString);
             var topicClient = factory.CreateTopicClient(TopicPath);
 
             if (!manager.SubscriptionExists(TopicPath,"Log"))
             {
-                var loggingSubscriptionDescription = new SubscriptionDescription(TopicPath, "Log");
+                var loggingSubscriptionDescription = new SubscriptionDescription(TopicPath, "Log") ;
 #if DEBUG
                 //if this is for dev then delete the queue/subscription when its not being used
                 loggingSubscriptionDescription.AutoDeleteOnIdle = TimeSpan.FromHours(1);
@@ -105,15 +106,22 @@ namespace MessagingPOC.Sender
                         messageTarget = "Any";
                         break;
                 }
-
                 // Send a chat message
                 var brokeredMessage = new BrokeredMessage(text);
                 //add filterable property
                 brokeredMessage.Properties.Add("Target", messageTarget);
 
-                brokeredMessage.Label = messageTarget;
+                try
+                {
 
-                topicClient.Send(brokeredMessage);
+                    brokeredMessage.Label = messageTarget;
+
+                    topicClient.Send(brokeredMessage);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
             // Send a message to say you are leaving
             var shutDownMessage = new BrokeredMessage("Shutting down...");

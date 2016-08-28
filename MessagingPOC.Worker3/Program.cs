@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using MessagingPOC.Shared;
 using Microsoft.ServiceBus.Messaging;
 
 namespace MessagingPOC.Worker3
 {
     class Program
     {
-        //ToDo: Enter a valid Serivce Bus connection string
-        static string ConnectionString =
-            "";
-
+       
         static string TopicPath = "basetopic";
 
         private static string subscriptionName = "Worker3";
@@ -21,13 +19,13 @@ namespace MessagingPOC.Worker3
             TopicPath = $"{TopicPath}-{Environment.MachineName}";
 #endif
             // Create clients
-            var factory = MessagingFactory.CreateFromConnectionString(ConnectionString);
+            var factory = MessagingFactory.CreateFromConnectionString(Config.ConnectionString);
             var topicClient = factory.CreateTopicClient(TopicPath);
             
             var subscriptionClient = factory.CreateSubscriptionClient(TopicPath, subscriptionName);
 
             // Create a message pump for receiving messages
-            subscriptionClient.OnMessage(msg => ProcessMessage(msg));
+            subscriptionClient.OnMessage(MessagingHelpers.ProcessMessage, MessagingHelpers.CreateMessageOptions());
 
             // Send a message to anyone listening for log info
             var readyMessage = new BrokeredMessage($"{subscriptionName} Ready...");
@@ -55,14 +53,6 @@ namespace MessagingPOC.Worker3
 
             // Close the factory and the clients it created
             factory.Close();
-        }
-
-        static void ProcessMessage(BrokeredMessage message)
-        {
-            string target = message.Label;
-            string text = message.GetBody<string>();
-
-            Console.WriteLine(target + ">" + text);
         }
     }
 }

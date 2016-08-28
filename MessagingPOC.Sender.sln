@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingPOC.Worker2", "Mes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingPOC.Worker3", "MessagingPOC.Worker3\MessagingPOC.Worker3.csproj", "{027924E0-181C-45D4-9FEA-9745430B0AF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingPOC.Shared", "MessagingPOC.Shared\MessagingPOC.Shared.csproj", "{97FF44C9-A243-424F-830D-96E009F8CDDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{027924E0-181C-45D4-9FEA-9745430B0AF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{027924E0-181C-45D4-9FEA-9745430B0AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{027924E0-181C-45D4-9FEA-9745430B0AF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97FF44C9-A243-424F-830D-96E009F8CDDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97FF44C9-A243-424F-830D-96E009F8CDDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97FF44C9-A243-424F-830D-96E009F8CDDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97FF44C9-A243-424F-830D-96E009F8CDDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

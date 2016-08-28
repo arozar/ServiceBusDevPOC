@@ -56,6 +56,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MessagingPOC.Shared\MessagingPOC.Shared.csproj">
+      <Project>{97ff44c9-a243-424f-830d-96e009f8cdda}</Project>
+      <Name>MessagingPOC.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
