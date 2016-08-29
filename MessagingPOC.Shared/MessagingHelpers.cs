@@ -28,9 +28,8 @@ namespace MessagingPOC.Shared
             }
             catch (MessageLockLostException e)
             {
-                //TODO test if this actually is a valid strategy
-                message.RenewLock();
-                processMessage(message);
+                //another thread / consumer could be using this at in this scenario
+                message.Abandon();
             }
             catch (Exception e)
             {
